@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Operation: Rescue Motku ❤️ | Anniversary Game for Arijit & Ayantika</title>
+    <meta name="description" content="A romantic 3D endless runner anniversary game: Help Arijit rescue Ayantika from the evil Assistant HOD!" />
+    <!-- Modern Romantic Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Outfit:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet" />
+    <script type="module" crossorigin src="./assets/index-DfzWbLkJ.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-FFIaqScl.css">
+  </head>
+  <body>
+    <div id="app-container">
+      <!-- Live IST Love Clock Ticker -->
+      <div id="love-clock-ticker" class="love-clock-bar">
+        <span class="clock-label">💖 Ghengis Khan with Motku:</span>
+        <span class="clock-time">1 year 2 months 00 hours 00 mins 00 seconds (IST)</span>
+      </div>
+
+      <!-- 3D WebGL Canvas -->
+      <canvas id="game-canvas"></canvas>
+
+      <!-- Heads Up Display (HUD) -->
+      <div id="hud-overlay" style="display: none;">
+        <div class="hud-stats">
+          <div class="stat-badge">
+            <span class="stat-icon">💖</span>
+            <span id="hud-lives" class="stat-val" style="letter-spacing: 2px;">❤️❤️❤️</span>
+          </div>
+          <div class="stat-badge">
+            <span class="stat-icon">🏆</span>
+            <span id="hud-highscore" class="stat-val">0</span>
+          </div>
+          <div class="stat-badge">
+            <span class="stat-icon">🏃</span>
+            <span id="hud-distance" class="stat-val">0 m</span>
+          </div>
+          <div class="stat-badge">
+            <span class="stat-icon">🪙</span>
+            <span id="hud-coins" class="stat-val">0</span>
+          </div>
+          <div class="stat-badge">
+            <span class="stat-icon">⭐</span>
+            <span id="hud-score" class="stat-val">0</span>
+          </div>
+          <div class="checkpoint-indicator">
+            <span>💌 Quiz Checkpoint:</span>
+            <span id="hud-timer" style="color: #ffd700; font-weight: 700;">60s</span>
+          </div>
+        </div>
+
+        <div class="hud-actions">
+          <button id="btn-open-scoreboard" class="btn btn-secondary" style="font-size: 0.8rem; padding: 6px 12px;" title="Open Scoreboard">
+            🏆 Scoreboard
+          </button>
+          <button id="btn-quiz-now" class="btn btn-gold" style="font-size: 0.82rem; padding: 6px 12px;" title="Trigger Memory Quiz Immediately!">
+            💌 Quiz Now
+          </button>
+          <button id="btn-toggle-speed" class="btn btn-secondary" style="font-size: 0.8rem; padding: 6px 12px;" title="Switch Checkpoint Interval (60s Normal / 10s Test)">
+            ⏱️ <span id="interval-label">60s</span>
+          </button>
+          <button id="btn-mute" class="btn btn-icon" aria-label="Toggle Sound">🔊</button>
+          <button id="btn-pause" class="btn btn-icon" aria-label="Pause Game">⏸️</button>
+        </div>
+      </div>
+
+      <!-- Mobile Touch Controls -->
+      <div id="mobile-controls" style="display: none;">
+        <div class="d-pad">
+          <button id="ctrl-left" class="ctrl-btn" aria-label="Move Left">◀</button>
+          <button id="ctrl-right" class="ctrl-btn" aria-label="Move Right">▶</button>
+        </div>
+        <div class="action-pad">
+          <button id="ctrl-slide" class="ctrl-btn" aria-label="Slide Down">▼</button>
+          <button id="ctrl-jump" class="ctrl-btn" aria-label="Jump Up">▲</button>
+        </div>
+      </div>
+
+      <!-- Correct Answer Romantic Feedback Banner -->
+      <div id="feedback-banner">
+        <span class="heart-icon">💖</span>
+        <span id="feedback-text">Tui koto bhalo 🥹❤️</span>
+      </div>
+
+      <!-- ================= UI SCREENS ================= -->
+
+      <!-- 1. Opening Cinematic Scene Modal -->
+      <div id="intro-modal" class="screen-modal">
+        <div class="modal-content glass-panel" style="max-width: 520px;">
+          <div style="font-size: 3rem; margin-bottom: -5px;">🏰💔✨</div>
+          <h1 class="game-title">Operation: Rescue Motku</h1>
+          <p class="subtitle">An Anniversary Adventure for Arijit & Ayantika</p>
+
+          <!-- Comical Hostage Scene Mock Avatars (Woman in Saree holding Ayantika in Jeans & T-shirt) -->
+          <!-- Comical Hostage Scene Mock Avatars (Woman in Saree holding Ayantika in Jeans & T-shirt) -->
+          <div class="hostage-mock-container" title="HOD holding Motku hostage!">
+            <svg class="hostage-mock-svg" viewBox="0 0 340 195" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="sareeGrad" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#671126"/>
+                  <stop offset="60%" stop-color="#460c1a"/>
+                  <stop offset="100%" stop-color="#2a050f"/>
+                </linearGradient>
+                <linearGradient id="goldBorder" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stop-color="#f5d77f"/>
+                  <stop offset="50%" stop-color="#d4af37"/>
+                  <stop offset="100%" stop-color="#aa820a"/>
+                </linearGradient>
+                <linearGradient id="jeansGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#34699a"/>
+                  <stop offset="100%" stop-color="#1c3b5e"/>
+                </linearGradient>
+                <linearGradient id="tshirtGrad" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#fff0f5"/>
+                  <stop offset="100%" stop-color="#ffd5e2"/>
+                </linearGradient>
+                <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
+                  <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000" flood-opacity="0.45"/>
+                </filter>
+              </defs>
+
+              <!-- Floor shadow -->
+              <ellipse cx="170" cy="160" rx="135" ry="9" fill="rgba(0,0,0,0.35)"/>
+
+              <!-- 1. WOMAN IN SAREE (HOD) -->
+              <g id="hod-saree-avatar" transform="translate(48, 8)">
+                <!-- Saree Body / Skirt -->
+                <path d="M40 88 L18 150 L68 150 L60 88 Z" fill="url(#sareeGrad)" filter="url(#softGlow)"/>
+                <!-- Gold Saree Border at Hem -->
+                <rect x="18" y="145" width="50" height="5" rx="1" fill="url(#goldBorder)"/>
+                <!-- Saree Pleats -->
+                <line x1="38" y1="90" x2="36" y2="145" stroke="#d4af37" stroke-width="1.2" opacity="0.65"/>
+                <line x1="46" y1="90" x2="48" y2="145" stroke="#d4af37" stroke-width="1.2" opacity="0.65"/>
+
+                <!-- Torso & Blouse -->
+                <path d="M30 64 L22 90 L62 90 L58 64 Z" fill="#460c1a"/>
+
+                <!-- Saree Pallu (draped across torso over left shoulder) -->
+                <path d="M24 86 Q40 68 56 48 L64 52 Q44 76 26 90 Z" fill="url(#sareeGrad)"/>
+                <path d="M24 86 Q40 68 56 48" stroke="url(#goldBorder)" stroke-width="2.5" fill="none"/>
+
+                <!-- Left Arm Gripping Motku's arm -->
+                <path d="M58 66 Q74 74 88 80" stroke="#d49b77" stroke-width="7" stroke-linecap="round" fill="none"/>
+                <!-- Gold Bangle -->
+                <circle cx="78" cy="75" r="4.5" fill="none" stroke="#d4af37" stroke-width="2"/>
+
+                <!-- Right Arm Raised with Academic Ruler -->
+                <path d="M26 66 Q10 63 14 44" stroke="#d49b77" stroke-width="6.5" stroke-linecap="round" fill="none"/>
+                <!-- Wooden Ruler in Hand -->
+                <rect x="8" y="22" width="6" height="38" rx="1" transform="rotate(-15 11 41)" fill="#c68a4c" stroke="#5a3818" stroke-width="1"/>
+                <line x1="10" y1="26" x2="14" y2="26" stroke="#5a3818" stroke-width="0.8"/>
+                <line x1="10" y1="32" x2="14" y2="32" stroke="#5a3818" stroke-width="0.8"/>
+                <line x1="10" y1="38" x2="14" y2="38" stroke="#5a3818" stroke-width="0.8"/>
+
+                <!-- Neck -->
+                <rect x="40" y="46" width="9" height="12" rx="2" fill="#d49b77"/>
+
+                <!-- Head -->
+                <ellipse cx="44" cy="36" rx="15" ry="17" fill="#e0a885" filter="url(#softGlow)"/>
+
+                <!-- Traditional Bun at back -->
+                <circle cx="28" cy="30" r="9" fill="#181313"/>
+                <path d="M30 28 Q44 18 58 28 Q54 20 44 20 Q34 20 30 28 Z" fill="#181313"/>
+
+                <!-- Red Bindi -->
+                <circle cx="44" cy="30" r="1.8" fill="#d01830"/>
+
+                <!-- Strict Rectangular Glasses -->
+                <rect x="34" y="32" width="8" height="6" rx="1.5" fill="none" stroke="#111" stroke-width="1.4"/>
+                <rect x="46" y="32" width="8" height="6" rx="1.5" fill="none" stroke="#111" stroke-width="1.4"/>
+                <line x1="42" y1="35" x2="46" y2="35" stroke="#111" stroke-width="1.4"/>
+
+                <!-- Strict Eyebrows (Frowning) -->
+                <path d="M34 30 L41 32" stroke="#111" stroke-width="1.5" stroke-linecap="round"/>
+                <path d="M54 30 L47 32" stroke="#111" stroke-width="1.5" stroke-linecap="round"/>
+
+                <!-- Eyes behind glasses -->
+                <circle cx="38" cy="35" r="1.2" fill="#111"/>
+                <circle cx="50" cy="35" r="1.2" fill="#111"/>
+
+                <!-- Stern Frown Mouth -->
+                <path d="M40 45 Q44 42 48 45" stroke="#8c2338" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+
+                <!-- High-Visibility HOD Badge -->
+                <g transform="translate(14, 154)" filter="url(#softGlow)">
+                  <rect x="0" y="0" width="60" height="22" rx="11" fill="#3a0914" stroke="#ffd700" stroke-width="1.8"/>
+                  <text x="30" y="15" font-size="11" font-weight="800" fill="#ffd700" text-anchor="middle" font-family="'Outfit', -apple-system, sans-serif" letter-spacing="1">HOD</text>
+                </g>
+              </g>
+
+              <!-- Hostage Ribbon Bonds -->
+              <g id="hostage-bonds">
+                <path d="M128 88 Q142 82 165 86" stroke="#ffd700" stroke-width="3" stroke-dasharray="4 2" fill="none"/>
+                <path d="M128 102 Q144 106 168 100" stroke="#ffd700" stroke-width="3" stroke-dasharray="4 2" fill="none"/>
+              </g>
+
+              <!-- 2. MOTKU (AYANTIKA IN GLASSES, T-SHIRT & JEANS) -->
+              <!-- The girl Arijit reunites with at the end! -->
+              <g id="ayantika-avatar" transform="translate(142, 20)">
+                <!-- Legs in Blue Denim Jeans -->
+                <path d="M30 90 L26 138 L34 138 L38 96 L42 96 L46 138 L54 138 L50 90 Z" fill="url(#jeansGrad)" filter="url(#softGlow)"/>
+                <path d="M29 94 Q38 97 51 94" stroke="#5d8ebf" stroke-width="1" fill="none"/>
+
+                <!-- Cute White Sneakers -->
+                <rect x="23" y="135" width="12" height="6" rx="2" fill="#ffffff" stroke="#ddd" stroke-width="0.8"/>
+                <rect x="46" y="135" width="12" height="6" rx="2" fill="#ffffff" stroke="#ddd" stroke-width="0.8"/>
+
+                <!-- Cute T-Shirt with Motku Heart Motif -->
+                <path d="M24 62 L20 84 Q40 88 60 84 L56 62 Z" fill="url(#tshirtGrad)" filter="url(#softGlow)"/>
+                <path d="M38 72 A 2.2 2.2 0 0 0 35 70 A 2.2 2.2 0 0 0 35 73.5 L 38 76.5 L 41 73.5 A 2.2 2.2 0 0 0 41 70 A 2.2 2.2 0 0 0 38 72 Z" fill="#e85d88"/>
+
+                <!-- Hostage Arms tied comically in front -->
+                <path d="M22 64 Q16 78 30 82 Q40 82 54 78 Q60 64 58 64" stroke="#f0b896" stroke-width="5.5" stroke-linecap="round" fill="none"/>
+
+                <!-- Comical Ribbon Bow tying arms -->
+                <circle cx="37" cy="82" r="3" fill="#ffd700"/>
+                <path d="M34 82 Q30 86 32 92 M40 82 Q44 86 42 92" stroke="#ffd700" stroke-width="1.8" fill="none"/>
+
+                <!-- Neck -->
+                <rect x="36" y="50" width="8" height="12" rx="2" fill="#f0b896"/>
+
+                <!-- Head -->
+                <ellipse cx="40" cy="38" rx="14" ry="16" fill="#f0b896" filter="url(#softGlow)"/>
+
+                <!-- Dark Hair with Cute Framing Strands -->
+                <path d="M24 38 Q20 60 25 70 Q30 50 32 42 Z" fill="#241818"/>
+                <path d="M56 38 Q60 60 55 70 Q50 50 48 42 Z" fill="#241818"/>
+                <path d="M26 32 Q40 20 54 32 Q50 24 40 24 Q30 24 26 32 Z" fill="#241818"/>
+                <path d="M30 30 Q35 36 42 30 Q46 34 50 30" stroke="#241818" stroke-width="2.5" fill="none"/>
+
+                <!-- Ayantika's Trademark Cute Round Glasses -->
+                <circle cx="34" cy="37" r="5" fill="none" stroke="#222" stroke-width="1.5"/>
+                <circle cx="46" cy="37" r="5" fill="none" stroke="#222" stroke-width="1.5"/>
+                <line x1="39" y1="37" x2="41" y2="37" stroke="#222" stroke-width="1.5"/>
+
+                <!-- Pleading Expressive Eyes (🥺) -->
+                <circle cx="34" cy="37" r="2.2" fill="#111"/>
+                <circle cx="35" cy="36" r="0.9" fill="#fff"/>
+                <circle cx="46" cy="37" r="2.2" fill="#111"/>
+                <circle cx="47" cy="36" r="0.9" fill="#fff"/>
+
+                <!-- Cute Worried Eyebrows -->
+                <path d="M31 30 Q35 28 38 31" stroke="#222" stroke-width="1.2" fill="none"/>
+                <path d="M49 30 Q45 28 42 31" stroke="#222" stroke-width="1.2" fill="none"/>
+
+                <!-- Pleading Mouth -->
+                <path d="M37 45 Q40 43 43 45" stroke="#d04860" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+
+                <!-- Cartoon Tear Drop (Hostage distress!) -->
+                <path d="M49 40 Q52 44 49 46 Q46 44 49 40 Z" fill="#64b5f6"/>
+
+                <!-- High-Visibility MOTKU Badge -->
+                <g transform="translate(10, 142)" filter="url(#softGlow)">
+                  <rect x="0" y="0" width="60" height="22" rx="11" fill="#d83a6f" stroke="#ffffff" stroke-width="1.8"/>
+                  <text x="30" y="15" font-size="11" font-weight="800" fill="#ffffff" text-anchor="middle" font-family="'Outfit', -apple-system, sans-serif" letter-spacing="1">MOTKU</text>
+                </g>
+              </g>
+            </svg>
+          </div>
+
+          <div class="cinematic-dialog">
+            <div class="speaker-tag">🚨 The HOD Says:</div>
+            <div class="quote-text">“Eishob prem tem chere porashona koro”</div>
+            <div class="hostage-subtext">🥺 Ayantika: “Chengis, please rescue me! Don't let her give me extra syllabus!”</div>
+          </div>
+
+          <p style="font-size: 0.92rem; color: #ffcad4; line-height: 1.4;">
+            The HOD is holding Ayantika (Motku) hostage in the department! Her Assistant HOD is chasing you throwing books and syllabus barriers! Arijit (Chengis Khan), dodge the obstacles, answer the memory quiz, and rescue your love!
+          </p>
+
+          <!-- Checkpoint Setting Options -->
+          <div style="background: rgba(0,0,0,0.25); border-radius: 12px; padding: 10px; margin: 4px 0;">
+            <div style="font-size: 0.85rem; color: #ffd700; margin-bottom: 6px; font-weight: 700;">⚙️ Quiz Checkpoint Mode:</div>
+            <div style="display: flex; gap: 8px; justify-content: center;">
+              <button id="btn-mode-60" class="btn btn-gold" style="font-size: 0.82rem; padding: 6px 14px;">
+                Standard (60s)
+              </button>
+              <button id="btn-mode-10" class="btn btn-secondary" style="font-size: 0.82rem; padding: 6px 14px;">
+                Fast Quiz (10s)
+              </button>
+            </div>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 8px;">
+            <button id="btn-save-motku" class="btn btn-save-motku">
+              DO YOU WANT TO SAVE AYANTIKA? ❤️
+            </button>
+            <button id="btn-skip-intro" class="btn btn-secondary" style="font-size: 0.9rem;">
+              Skip Cinematic ⏩
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Instructions / How to Play Modal -->
+      <div id="instructions-modal" class="screen-modal hidden">
+        <div class="modal-content glass-panel">
+          <h2 style="color: var(--color-gold-light); font-size: 1.6rem;">How To Play 🎮</h2>
+          <div style="text-align: left; font-size: 0.95rem; line-height: 1.6; color: #ffe6dd;">
+            <p><strong>Desktop:</strong></p>
+            <p>• ⬅️ ➡️ Arrow Keys: Switch lanes</p>
+            <p>• ⬆️ Arrow or Space: Jump over logs & walls</p>
+            <p>• ⬇️ Arrow: Slide under low branches</p>
+            <p>• P or Esc: Pause game</p>
+            <br />
+            <p><strong>Mobile:</strong></p>
+            <p>• Swipe Left/Right to change lanes</p>
+            <p>• Swipe Up to jump, Swipe Down to slide</p>
+            <p>• Or use the on-screen buttons below!</p>
+            <br />
+            <p><strong>❤️ Quiz Checkpoints:</strong></p>
+            <p>Answer relationship questions correctly to stay in the run and rescue Motku!</p>
+          </div>
+          <button id="btn-start-runner" class="btn btn-primary" style="margin-top: 10px;">
+            Let's Run! 🚀
+          </button>
+        </div>
+      </div>
+
+      <!-- 3. Quiz Checkpoint Modal -->
+      <div id="quiz-modal" class="screen-modal hidden">
+        <div class="modal-content glass-panel quiz-card">
+          <div class="quiz-header">
+            <span id="quiz-number-badge" class="quiz-badge">Memory Checkpoint #1</span>
+            <span style="font-size: 1.3rem;">💌</span>
+          </div>
+
+          <div id="quiz-prompt-text" class="quiz-prompt">
+            When did Arijit first meet Ayantika?
+          </div>
+
+          <!-- Options Container (Choice) -->
+          <div id="quiz-options-container" class="quiz-options">
+            <!-- Dynamically populated -->
+          </div>
+
+          <!-- Text Input Container (Question 3) -->
+          <div id="quiz-text-container" class="quiz-input-group" style="display: none;">
+            <input
+              type="text"
+              id="quiz-text-input"
+              class="quiz-text-input"
+              placeholder="Type your answer here..."
+              autocomplete="off"
+              autocorrect="off"
+              autocapitalize="off"
+              spellcheck="false"
+            />
+            <button id="btn-submit-text" class="btn btn-gold" style="width: 100%;">
+              Submit Answer 💌
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. Game Over Modal -->
+      <div id="gameover-modal" class="screen-modal hidden">
+        <div class="modal-content glass-panel" style="border-color: #ff4d6d;">
+          <div style="font-size: 3rem;">💔🥀</div>
+          <h2 style="font-size: 1.8rem; color: #ff8da1;">Run Over!</h2>
+
+          <div id="gameover-msg" style="font-size: 1.25rem; font-weight: 700; color: #fff; margin: 6px 0;">
+            Amake ekdom bhalobashena 😭💔
+          </div>
+
+          <div style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 12px; font-size: 0.95rem;">
+            <div>Distance: <strong id="go-distance" style="color: #ffd700;">0 m</strong></div>
+            <div>Coins Collected: <strong id="go-coins" style="color: #ffd700;">0</strong></div>
+            <div>Score: <strong id="go-score" style="color: #ffd700;">0</strong></div>
+          </div>
+
+          <button id="btn-restart" class="btn btn-primary" style="margin-top: 10px;">
+            Restart From Question 1 🔄
+          </button>
+        </div>
+      </div>
+
+      <!-- 5. Pause Modal -->
+      <div id="pause-modal" class="screen-modal hidden">
+        <div class="modal-content glass-panel">
+          <h2 style="font-size: 1.8rem; color: var(--color-gold-light);">Game Paused ⏸️</h2>
+          <p style="color: var(--color-text-muted);">Take a breath, Ghengis Khan!</p>
+
+          <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 10px;">
+            <button id="btn-resume" class="btn btn-primary">Resume Running ▶️</button>
+            <button id="btn-pause-restart" class="btn btn-secondary">Restart Run 🔄</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6. Final Rescue Cinematic Modal -->
+      <div id="rescue-modal" class="screen-modal hidden">
+        <div class="modal-content glass-panel" style="max-width: 500px; border-color: #ffd700;">
+          <div style="font-size: 3rem; animation: pulse-glow 1.5s infinite;">❤️👑💍</div>
+          <h2 style="font-size: 2rem; color: #ffd700;">Motku is Rescued!</h2>
+          <p style="font-size: 1.15rem; color: #ffcad4; line-height: 1.4;">
+            Arijit outran the Assistant HOD and broke every barrier! Assistant HOD has comically tripped into a pile of syllabus papers!
+          </p>
+          <div class="cinematic-dialog" style="margin-top: 8px;">
+            <div class="quote-text" style="font-size: 1.15rem; color: #ffe6dd;">
+              “Tumi amar hero Ghengis Khan! ❤️”
+            </div>
+          </div>
+          <button id="btn-see-anniversary" class="btn btn-gold" style="margin-top: 10px;">
+            Open Our Anniversary Memory 💌
+          </button>
+        </div>
+      </div>
+
+      <!-- 7. Final Anniversary Screen with Exact Photo Collage -->
+      <div id="ending-modal" class="screen-modal hidden">
+        <div class="ending-container">
+          <div class="anniversary-badge">Arijit & Ayantika • Our Story</div>
+
+          <!-- EXACT ANNIVERSARY MESSAGES (Part 10 mandatory wording) -->
+          <div class="anniversary-msg-primary">
+            Happy 14th months, I love you more than you love me !!!!
+          </div>
+
+          <div class="anniversary-msg-secondary">
+            Forever your Ayantika ♡
+          </div>
+
+          <!-- EXACT UPLOADED PHOTO COLLAGE -->
+          <div class="collage-frame">
+            <img
+              id="anniversary-collage-img"
+              class="collage-image"
+              src="./assets/anniversary-collage.jpeg"
+              alt="Arijit and Ayantika Anniversary Couple Collage"
+            />
+            <div id="collage-fallback" class="collage-fallback">
+              <div style="font-size: 2.5rem;">📸❤️</div>
+              <p>Please place the photo collage in:</p>
+              <code>public/assets/anniversary-collage.jpeg</code>
+            </div>
+          </div>
+
+          <div class="ending-actions">
+            <button id="btn-replay" class="btn btn-primary">Play Again 🏃</button>
+            <button id="btn-back-to-title" class="btn btn-secondary">Back to Title 🏠</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 8. Dedicated Scoreboard Modal -->
+      <div id="scoreboard-modal" class="screen-modal hidden">
+        <div class="modal-content glass-panel" style="max-width: 480px; border-color: #ffd700;">
+          <div style="font-size: 2.8rem;">🏆💖✨</div>
+          <h2 style="font-size: 1.8rem; color: #ffd700;">Operation: Rescue Motku</h2>
+          <div id="sb-love-clock" style="font-size: 0.95rem; color: #ffcad4; font-weight: 700; background: rgba(0,0,0,0.3); padding: 8px 12px; border-radius: 999px; margin-bottom: 8px;">
+            Ghengis Khan with Motku (IST)
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; text-align: center; margin: 10px 0;">
+            <div style="background: rgba(229,169,60,0.15); border: 1px solid #ffd700; border-radius: 14px; padding: 12px;">
+              <div style="font-size: 0.85rem; color: #ffd700;">🏆 Best Score</div>
+              <div id="sb-highscore" style="font-size: 1.6rem; font-weight: 800; color: #fff;">0</div>
+            </div>
+            <div style="background: rgba(232,93,136,0.15); border: 1px solid #e85d88; border-radius: 14px; padding: 12px;">
+              <div style="font-size: 0.85rem; color: #ff8da1;">⭐ Current Score</div>
+              <div id="sb-current-score" style="font-size: 1.6rem; font-weight: 800; color: #fff;">0</div>
+            </div>
+            <div style="background: rgba(255,255,255,0.08); border-radius: 14px; padding: 12px;">
+              <div style="font-size: 0.85rem; color: #ffd27d;">🏃 Longest Run</div>
+              <div id="sb-distance" style="font-size: 1.4rem; font-weight: 800; color: #fff;">0 m</div>
+            </div>
+            <div style="background: rgba(255,255,255,0.08); border-radius: 14px; padding: 12px;">
+              <div style="font-size: 0.85rem; color: #ffd27d;">🪙 Coins Collected</div>
+              <div id="sb-coins" style="font-size: 1.4rem; font-weight: 800; color: #fff;">0</div>
+            </div>
+          </div>
+
+          <div style="background: rgba(0,0,0,0.25); border-radius: 12px; padding: 10px; font-size: 0.9rem;">
+            💌 Memories Rescued: <strong id="sb-memories" style="color: #ffd700;">0 / 5</strong>
+          </div>
+
+          <button id="btn-close-scoreboard" class="btn btn-primary" style="margin-top: 10px;">
+            Close & Keep Running 🏃
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Main Module Script -->
+  </body>
+</html>
